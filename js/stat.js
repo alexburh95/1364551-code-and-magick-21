@@ -10,7 +10,7 @@ const FONT_GAP = 50;
 const BAR_GAP = 30;
 const TEXT_WIDTH = 50;
 const BAR_HEIGHT = -150;
-const barWidth = 40;
+const BAR_WIDTH = 40;
 const TITLE = `Ура вы победили!`;
 const DESCRIPTION = `Список результатов: `;
 
@@ -37,38 +37,40 @@ const getTitle = (ctx, text, description) => {
   ctx.fillText(text, CLOUD_X + GAP, CLOUD_Y + GAP);
   ctx.fillText(description, CLOUD_X + GAP, CLOUD_Y + GAP * 2);
 };
-const getCollor = (name) => {
-  return name === `Вы`
-    ? `rgba(255, 0, 0, 1)`
-    : `hsla(237, ${Math.round(Math.random() * 100)}%, 50%, 1)`;
-};
+const getColor = (name) =>
+  name === `Вы` ?
+    `rgba(255, 0, 0, 1)` :
+    `hsla(237, ${Math.round(Math.random() * 100)}%, 50%, 1)`;
 window.renderStatistics = (ctx, players, times) => {
-  renderCloud(ctx, CLOUD_X + FORM_GAP, CLOUD_Y + FORM_GAP, `rgba(0, 0, 0, 0.7)`);
+  renderCloud(
+      ctx,
+      CLOUD_X + FORM_GAP,
+      CLOUD_Y + FORM_GAP,
+      `rgba(0, 0, 0, 0.7)`
+  );
   renderCloud(ctx, CLOUD_X, CLOUD_Y, `#fff`);
   getTitle(ctx, TITLE, DESCRIPTION);
 
   const maxTime = getMaxElement(times);
 
-  for (let i = 0; i < players.length; i++) {
+  players.forEach((item, index) => {
     ctx.fillStyle = `#000000`;
     ctx.fillText(
-        players[i],
-        CLOUD_X + GAP + (TEXT_WIDTH + barWidth) * i,
+        item,
+        CLOUD_X + GAP + (TEXT_WIDTH + BAR_WIDTH) * index,
         CLOUD_HEIGHT - FONT_GAP / 2
     );
-
     ctx.fillText(
-        times[i].toFixed(),
-        CLOUD_X + GAP + (TEXT_WIDTH + barWidth) * i,
-
-        (BAR_HEIGHT * times[i]) / maxTime + CLOUD_HEIGHT - TEXT_WIDTH
+        times[index].toFixed(),
+        CLOUD_X + GAP + (TEXT_WIDTH + BAR_WIDTH) * index,
+        (BAR_HEIGHT * times[index]) / maxTime + CLOUD_HEIGHT - TEXT_WIDTH
     );
-    ctx.fillStyle = getCollor(players[i]);
+    ctx.fillStyle = getColor(item);
     ctx.fillRect(
-        CLOUD_X + GAP + (TEXT_WIDTH + barWidth) * i,
+        CLOUD_X + GAP + (TEXT_WIDTH + BAR_WIDTH) * index,
         CLOUD_HEIGHT - BAR_GAP,
-        barWidth,
-        (BAR_HEIGHT * times[i]) / maxTime
+        BAR_WIDTH,
+        (BAR_HEIGHT * times[index]) / maxTime
     );
-  }
+  });
 };
