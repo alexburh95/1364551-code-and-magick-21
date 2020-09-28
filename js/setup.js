@@ -47,11 +47,14 @@ const getRandomValue = (array) => {
 };
 const getNewMagik = (name, surname, coat, yeys) => {
   let randomMassiv = [];
-  randomMassiv.push(getRandomValue(name));
-  randomMassiv.push(getRandomValue(surname));
-  randomMassiv.push(getRandomValue(coat));
-  randomMassiv.push(getRandomValue(yeys));
-
+  for (let i = 0; i < 4; i++) {
+    randomMassiv[i] = {
+      name: getRandomValue(name),
+      surname: getRandomValue(surname),
+      coat: getRandomValue(coat),
+      yeys: getRandomValue(yeys),
+    };
+  }
 
   return randomMassiv;
 };
@@ -60,18 +63,18 @@ const renderWizard = (wizard) => {
   let wizardElement = similarWizardTemplate.cloneNode(true);
 
   wizardElement.querySelector(`.setup-similar-label`).textContent =
-    wizard[0] + ` ` + wizard[1];
-  wizardElement.querySelector(`.wizard-coat`).style.fill = wizard[2];
-  wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard[3];
+    wizard.name + ` ` + wizard.surname;
+
+  wizardElement.querySelector(`.wizard-coat`).style.fill = wizard.coat;
+  wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard.yeys;
 
   return wizardElement;
 };
 const getSetting = () => {
   let fragment = document.createDocumentFragment();
-  for (let i = 0; i < 4; i++) {
-    fragment.appendChild(
-        renderWizard(getNewMagik(NAMES, SURNAMES, COAT_COLOR, YEYS_COLOR))
-    );
+  let massiv = getNewMagik(NAMES, SURNAMES, COAT_COLOR, YEYS_COLOR);
+  for (let i = 0; i < massiv.length; i++) {
+    fragment.appendChild(renderWizard(massiv[i]));
   }
   similarListElement.appendChild(fragment);
 };
