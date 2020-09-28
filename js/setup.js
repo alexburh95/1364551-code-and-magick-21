@@ -1,5 +1,5 @@
 "use strict";
-
+const NUMBER_OF_WIZARDS = 4;
 const NAMES = [
   `Иван`,
   `Хуан Себастьян`,
@@ -31,7 +31,7 @@ const COAT_COLOR = [
   `rgb(0, 0, 0)`,
 ];
 
-const YEYS_COLOR = [`black`, `red`, `blue`, `yellow`, `green`];
+const EYES_COLOR = [`black`, `red`, `blue`, `yellow`, `green`];
 const userSetup = document.querySelector(`.hidden`);
 
 userSetup.classList.remove(`hidden`);
@@ -42,28 +42,28 @@ const similarWizardTemplate = document
   .content.querySelector(`.setup-similar-item`);
 
 const getRandomValue = (array) => {
-  let random = Math.floor(Math.random() * array.length);
+  const random = Math.floor(Math.random() * array.length);
   return array[random];
 };
-const getNewMagik = (name, surname, coat, yeys) => {
-  let randomMassiv = [];
-  for (let i = 0; i < 4; i++) {
-    randomMassiv[i] = {
+const getNewWizard = (name, surname, coat, eyes) => {
+  const wizardsArray = [];
+  for (let i = 0; i < NUMBER_OF_WIZARDS; i++) {
+    wizardsArray.push({
       name: getRandomValue(name),
       surname: getRandomValue(surname),
       coat: getRandomValue(coat),
-      yeys: getRandomValue(yeys),
-    };
+      yeys: getRandomValue(eyes),
+    });
   }
 
-  return randomMassiv;
+  return wizardsArray;
 };
 
 const renderWizard = (wizard) => {
-  let wizardElement = similarWizardTemplate.cloneNode(true);
+  const wizardElement = similarWizardTemplate.cloneNode(true);
 
   wizardElement.querySelector(`.setup-similar-label`).textContent =
-    wizard.name + ` ` + wizard.surname;
+  `${ wizard.name } ${ wizard.surname }`;
 
   wizardElement.querySelector(`.wizard-coat`).style.fill = wizard.coat;
   wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard.yeys;
@@ -72,10 +72,13 @@ const renderWizard = (wizard) => {
 };
 const getSetting = () => {
   let fragment = document.createDocumentFragment();
-  let massiv = getNewMagik(NAMES, SURNAMES, COAT_COLOR, YEYS_COLOR);
-  for (let i = 0; i < massiv.length; i++) {
-    fragment.appendChild(renderWizard(massiv[i]));
-  }
+  let array = getNewWizard(NAMES, SURNAMES, COAT_COLOR, EYES_COLOR);
+
+  array.forEach((item) => {
+    fragment.appendChild(renderWizard(item));
+
+  });
+
   similarListElement.appendChild(fragment);
 };
 getSetting();
