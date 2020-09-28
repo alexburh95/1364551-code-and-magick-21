@@ -52,7 +52,7 @@ const getNewWizard = (name, surname, coat, eyes) => {
       name: getRandomValue(name),
       surname: getRandomValue(surname),
       coat: getRandomValue(coat),
-      yeys: getRandomValue(eyes),
+      eyes: getRandomValue(eyes),
     });
   }
 
@@ -66,13 +66,13 @@ const renderWizard = (wizard) => {
   `${ wizard.name } ${ wizard.surname }`;
 
   wizardElement.querySelector(`.wizard-coat`).style.fill = wizard.coat;
-  wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard.yeys;
+  wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard.eyes;
 
   return wizardElement;
 };
 const getSetting = () => {
-  let fragment = document.createDocumentFragment();
-  let array = getNewWizard(NAMES, SURNAMES, COAT_COLOR, EYES_COLOR);
+  const fragment = document.createDocumentFragment();
+  const array = getNewWizard(NAMES, SURNAMES, COAT_COLOR, EYES_COLOR);
 
   array.forEach((item) => {
     fragment.appendChild(renderWizard(item));
