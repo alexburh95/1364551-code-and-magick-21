@@ -1,4 +1,9 @@
 "use strict";
+
+const setupOpen = document.querySelector(`.setup-open`);
+const setup = document.querySelector(`.setup`);
+const setupClose = setup.querySelector(`.setup-close`);
+
 const NUMBER_OF_WIZARDS = 4;
 const NAMES = [
   `Иван`,
@@ -21,6 +26,13 @@ const SURNAMES = [
   `Нионго`,
   `Ирвинг`,
 ];
+const FIREBALL_COLOR = [
+  `#ee4830`,
+  `#30a8ee`,
+  `#5ce6c0`,
+  `#e848d5`,
+  `#e6e848`,
+];
 
 const COAT_COLOR = [
   `rgb(101, 137, 164)`,
@@ -34,6 +46,73 @@ const COAT_COLOR = [
 const EYES_COLOR = [`black`, `red`, `blue`, `yellow`, `green`];
 const userSetup = document.querySelector(`.hidden`);
 
+const coatColor = document.querySelector(`.wizard-coat`);
+const eyesColor = document.querySelector(`.wizard-eyes`);
+const ballColor = document.querySelector(`.setup-fireball-wrap`);
+const getRandomValue = (array) => {
+  const random = Math.floor(Math.random() * array.length);
+  return array[random];
+};
+
+const onPopupEscPress = (evt) => {
+  if (evt.key === `Escape`) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+const changeColor = (array, chosenClass, inputName, styles)=>{
+
+  const changeInputValue = document.querySelectorAll(`input[name$=${inputName}]`);
+  const color = getRandomValue(array);
+  changeInputValue.value = color;
+  chosenClass.style[styles] = color;
+};
+coatColor.addEventListener(`click`, function () {
+  changeColor(COAT_COLOR, coatColor, `coat-color`, `fill`);
+});
+eyesColor.addEventListener(`click`, function () {
+  changeColor(EYES_COLOR, eyesColor, `eyes-color`, `fill`);
+});
+ballColor.addEventListener(`click`, function () {
+
+  changeColor(FIREBALL_COLOR, ballColor, `fireball-color`, `background-color`);
+});
+const openPopup = () => {
+  setup.classList.remove(`hidden`);
+
+  document.addEventListener(`keydown`, onPopupEscPress);
+};
+
+const closePopup = () => {
+  setup.classList.add(`hidden`);
+
+  document.removeEventListener(`keydown`, onPopupEscPress);
+};
+
+setupOpen.addEventListener(`click`, function () {
+  openPopup();
+});
+
+setupOpen.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener(`click`, function () {
+  closePopup();
+});
+
+setupClose.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    closePopup();
+  }
+});
+
+setupClose.addEventListener(`click`, function () {
+  closePopup();
+});
+
 userSetup.classList.remove(`hidden`);
 const similarListElement = userSetup.querySelector(`.setup-similar-list`);
 
@@ -41,10 +120,6 @@ const similarWizardTemplate = document
   .querySelector(`#similar-wizard-template`)
   .content.querySelector(`.setup-similar-item`);
 
-const getRandomValue = (array) => {
-  const random = Math.floor(Math.random() * array.length);
-  return array[random];
-};
 const getNewWizard = (name, surname, coat, eyes) => {
   const wizardsArray = [];
   for (let i = 0; i < NUMBER_OF_WIZARDS; i++) {
