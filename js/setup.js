@@ -26,13 +26,7 @@ const SURNAMES = [
   `Нионго`,
   `Ирвинг`,
 ];
-const FIREBALL_COLOR = [
-  `#ee4830`,
-  `#30a8ee`,
-  `#5ce6c0`,
-  `#e848d5`,
-  `#e6e848`,
-];
+const FIREBALL_COLOR = [`#ee4830`, `#30a8ee`, `#5ce6c0`, `#e848d5`, `#e6e848`];
 
 const COAT_COLOR = [
   `rgb(101, 137, 164)`,
@@ -49,34 +43,44 @@ const userSetup = document.querySelector(`.hidden`);
 const coatColor = document.querySelector(`.wizard-coat`);
 const eyesColor = document.querySelector(`.wizard-eyes`);
 const ballColor = document.querySelector(`.setup-fireball-wrap`);
+
+const KEYS = {
+  ENTER: `Enter`,
+  ESCAPE: `Escape`,
+};
 const getRandomValue = (array) => {
   const random = Math.floor(Math.random() * array.length);
   return array[random];
 };
 
 const onPopupEscPress = (evt) => {
-  if (evt.key === `Escape`) {
+  if (evt.key === KEYS.ESCAPE) {
     evt.preventDefault();
     closePopup();
   }
 };
-const changeColor = (array, chosenClass, inputName, styles)=>{
-
-  const changeInputValue = document.querySelectorAll(`input[name$=${inputName}]`);
+const changeColor = (array, chosenClass, inputName, styles) => {
+  const changeInputValue = document.querySelector(`input[name$=${inputName}]`);
   const color = getRandomValue(array);
   changeInputValue.value = color;
   chosenClass.style[styles] = color;
 };
-coatColor.addEventListener(`click`, function () {
-  changeColor(COAT_COLOR, coatColor, `coat-color`, `fill`);
-});
-eyesColor.addEventListener(`click`, function () {
-  changeColor(EYES_COLOR, eyesColor, `eyes-color`, `fill`);
-});
-ballColor.addEventListener(`click`, function () {
 
+const coatColorHandler = () => {
+  changeColor(COAT_COLOR, coatColor, `coat-color`, `fill`);
+};
+coatColor.addEventListener(`click`, coatColorHandler);
+
+const eyesColorHandler = () => {
+  changeColor(EYES_COLOR, eyesColor, `eyes-color`, `fill`);
+};
+
+eyesColor.addEventListener(`click`, eyesColorHandler);
+
+const ballColorHandler = () => {
   changeColor(FIREBALL_COLOR, ballColor, `fireball-color`, `background-color`);
-});
+};
+ballColor.addEventListener(`click`, ballColorHandler);
 const openPopup = () => {
   setup.classList.remove(`hidden`);
 
@@ -94,7 +98,7 @@ setupOpen.addEventListener(`click`, function () {
 });
 
 setupOpen.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
+  if (evt.key === KEYS.ENTER) {
     openPopup();
   }
 });
@@ -104,7 +108,7 @@ setupClose.addEventListener(`click`, function () {
 });
 
 setupClose.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
+  if (evt.key === KEYS.ENTER) {
     closePopup();
   }
 });
@@ -137,8 +141,9 @@ const getNewWizard = (name, surname, coat, eyes) => {
 const renderWizard = (wizard) => {
   const wizardElement = similarWizardTemplate.cloneNode(true);
 
-  wizardElement.querySelector(`.setup-similar-label`).textContent =
-  `${ wizard.name } ${ wizard.surname }`;
+  wizardElement.querySelector(
+      `.setup-similar-label`
+  ).textContent = `${wizard.name} ${wizard.surname}`;
 
   wizardElement.querySelector(`.wizard-coat`).style.fill = wizard.coat;
   wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard.eyes;
@@ -151,7 +156,6 @@ const getSetting = () => {
 
   array.forEach((item) => {
     fragment.appendChild(renderWizard(item));
-
   });
 
   similarListElement.appendChild(fragment);
